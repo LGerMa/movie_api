@@ -1,6 +1,6 @@
 class CreateMovies < ActiveRecord::Migration[5.2]
   def change
-    create_table :movies do |t|
+    create_table :movies, id: :uuid do |t|
       t.string :title, default: ''
       t.text :description, default: ''
       t.string :images, array: true, default: []
