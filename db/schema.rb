@@ -10,11 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_02_010140) do
+ActiveRecord::Schema.define(version: 2019_09_03_030525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "audits", force: :cascade do |t|
+    t.integer "auditable_id"
+    t.string "auditable_type"
+    t.integer "associated_id"
+    t.string "associated_type"
+    t.uuid "user_id"
+    t.string "user_type"
+    t.string "username"
+    t.string "action"
+    t.jsonb "audited_changes"
+    t.integer "version", default: 0
+    t.string "comment"
+    t.string "remote_address"
+    t.string "request_uuid"
+    t.datetime "created_at"
+    t.index ["associated_type", "associated_id"], name: "associated_index"
+    t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
+    t.index ["created_at"], name: "index_audits_on_created_at"
+    t.index ["request_uuid"], name: "index_audits_on_request_uuid"
+    t.index ["user_id", "user_type"], name: "user_index"
+  end
 
   create_table "likes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "movie_id"
@@ -115,6 +137,16 @@ ActiveRecord::Schema.define(version: 2019_09_02_010140) do
     t.index ["user_id"], name: "index_rentals_on_user_id"
   end
 
+  create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "resource_type"
+    t.uuid "resource_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
+    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -126,6 +158,14 @@ ActiveRecord::Schema.define(version: 2019_09_02_010140) do
     t.datetime "remember_created_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "users_roles", id: false, force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "role_id"
+    t.index ["role_id"], name: "index_users_roles_on_role_id"
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
+    t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
   add_foreign_key "likes", "movies"

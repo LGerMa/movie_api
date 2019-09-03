@@ -48,11 +48,14 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (9.0.0)
+    audited (4.9.0)
+      activerecord (>= 4.2, < 6.1)
     bcrypt (3.1.13)
     bootsnap (1.4.5)
       msgpack (~> 1.0)
     builder (3.2.3)
     byebug (11.0.1)
+    cancancan (3.0.1)
     case_transform (0.2)
       activesupport
     coderay (1.1.2)
@@ -97,6 +100,8 @@ GEM
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
+    money (6.13.4)
+      i18n (>= 0.6.4, <= 2)
     msgpack (1.3.1)
     nio4r (2.5.1)
     nokogiri (1.10.4)
@@ -141,6 +146,7 @@ GEM
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    rolify (5.2.0)
     rspec-core (3.8.2)
       rspec-support (~> 3.8.0)
     rspec-expectations (3.8.4)
@@ -191,8 +197,10 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  audited
   bootsnap (>= 1.1.0)
   byebug
+  cancancan
   database_cleaner
   devise
   doorkeeper
@@ -200,10 +208,12 @@ DEPENDENCIES
   faker
   figaro
   listen (>= 3.0.5, < 3.2)
+  money
   pg (>= 0.18, < 2.0)
   pry
   puma (~> 3.11)
   rails (~> 5.2.3)
+  rolify
   rspec-rails
   shoulda
   spring
