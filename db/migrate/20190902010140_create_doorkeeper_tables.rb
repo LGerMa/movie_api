@@ -1,6 +1,6 @@
-class CreateDoorkeeperTables < ActiveRecord::Migration[5.2]
+class CreateDoorkeeperTables < ActiveRecord::Migration[5.1]
   def change
-    create_table :oauth_applications do |t|
+    create_table :oauth_applications, id: :uuid do |t|
       t.string  :name,    null: false
       t.string  :uid,     null: false
       t.string  :secret,  null: false
@@ -16,9 +16,9 @@ class CreateDoorkeeperTables < ActiveRecord::Migration[5.2]
 
     add_index :oauth_applications, :uid, unique: true
 
-    create_table :oauth_access_grants do |t|
-      t.references :resource_owner,  null: false
-      t.references :application,     null: false
+    create_table :oauth_access_grants, id: :uuid do |t|
+      t.uuid :resource_owner_id,  null: false
+      t.uuid :application_id,     null: false
       t.string   :token,             null: false
       t.integer  :expires_in,        null: false
       t.text     :redirect_uri,      null: false
@@ -29,14 +29,14 @@ class CreateDoorkeeperTables < ActiveRecord::Migration[5.2]
 
     add_index :oauth_access_grants, :token, unique: true
     add_foreign_key(
-      :oauth_access_grants,
-      :oauth_applications,
-      column: :application_id
+        :oauth_access_grants,
+        :oauth_applications,
+        column: :application_id
     )
 
-    create_table :oauth_access_tokens do |t|
-      t.references :resource_owner, index: true
-      t.references :application,    null: false
+    create_table :oauth_access_tokens, id: :uuid do |t|
+      t.uuid :resource_owner_id
+      t.uuid :application_id
 
       # If you use a custom token generator you may need to change this column
       # from string to text, so that it accepts tokens larger than 255
@@ -62,11 +62,12 @@ class CreateDoorkeeperTables < ActiveRecord::Migration[5.2]
     end
 
     add_index :oauth_access_tokens, :token, unique: true
+    add_index :oauth_access_tokens, :resource_owner_id
     add_index :oauth_access_tokens, :refresh_token, unique: true
     add_foreign_key(
-      :oauth_access_tokens,
-      :oauth_applications,
-      column: :application_id
+        :oauth_access_tokens,
+        :oauth_applications,
+        column: :application_id
     )
 
     # Uncomment below to ensure a valid reference to the resource owner's table
