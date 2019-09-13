@@ -4,7 +4,7 @@ class Movie < ApplicationRecord
   has_many :purshases
 
   resourcify
-  audited only: %i[title description rental_price sale_price], on: :update
+  audited only: %i[title description rental_price sale_price availability], on: :update
 
   enum status: { 'inactive': 0, 'active': 1 }
 

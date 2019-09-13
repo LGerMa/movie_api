@@ -1,5 +1,5 @@
 class Api::V1::MovieSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :rental_price, :sale_price
+  attributes :id, :title, :description, :rental_price, :sale_price, :availability
 
   def rental_price
     Money.new(object.rental_price, "USD").format

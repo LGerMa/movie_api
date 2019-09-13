@@ -16,6 +16,12 @@ class Api::V1::MoviesController < Api::V1::BaseController
     render json: @movie, status: :ok
   end
 
+  def update
+    @movie.update!(movie_params)
+    set_movie
+    render json: @movie, status: :ok
+  end
+
   private
 
   def movie_params
