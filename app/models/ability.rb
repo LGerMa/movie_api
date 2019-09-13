@@ -37,6 +37,8 @@ class Ability
         can :read, Movie
         can :me, User, id: user.id
       end
+    else
+      can :read, Movie
     end
   end
 end
