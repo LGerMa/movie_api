@@ -9,7 +9,10 @@ Rails.application.routes.draw do
       get '/users/me', to: 'users#me'
       get '/users/me2', to: 'users#me2'
       resources :movies
-      resources :users
+      resources :users do
+        resources :rentals
+        patch '/rentals/:id/rental_returned', to: 'rentals#rental_returned'
+      end
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

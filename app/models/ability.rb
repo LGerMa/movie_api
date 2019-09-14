@@ -35,6 +35,7 @@ class Ability
         can :manage, :all
       else
         can :read, Movie
+        can :create, Rental
         can :me, User, id: user.id
       end
     else
