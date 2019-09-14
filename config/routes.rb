@@ -8,10 +8,13 @@ Rails.application.routes.draw do
     namespace :v1 do
       get '/users/me', to: 'users#me'
       get '/users/me2', to: 'users#me2'
-      resources :movies
+      resources :movies do
+        resources :likes
+      end
       resources :users do
         resources :rentals
         patch '/rentals/:id/rental_returned', to: 'rentals#rental_returned'
+        resources :purshases
       end
     end
   end

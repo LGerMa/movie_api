@@ -35,13 +35,13 @@ RSpec.describe 'Movie', type: :request do
     end
     context 'When user is admin' do
       it 'should create a new movie' do
-        post '/api/v1/movies', :params => params, :headers => admin_headers
+        post '/api/v1/movies', params: params, headers: admin_headers
         expect(response).to have_http_status(:created)
       end
     end
     context 'When user is NOT admin' do
       it 'should not create a new movie' do
-        post '/api/v1/movies', :params => params, :headers => user_headers
+        post '/api/v1/movies', params: params, headers: user_headers
         expect(response).to have_http_status(:not_found)
       end
     end
@@ -59,8 +59,8 @@ RSpec.describe 'Movie', type: :request do
     context 'When user is admin' do
       it 'should update a movie info' do
         patch "/api/v1/movies/#{movie_to_update.id}",
-              :params => params_to_update,
-              :headers => admin_headers
+              params: params_to_update,
+              headers: admin_headers
         expect(response).to have_http_status(:ok)
         expect(json[:description]).to eq(params_to_update['description'])
       end
@@ -68,15 +68,15 @@ RSpec.describe 'Movie', type: :request do
     context 'When user is NOT admin' do
       it 'should NOT update a movie info' do
         patch "/api/v1/movies/#{movie_to_update.id}",
-              :params => params_to_update,
-              :headers => user_headers
+              params: params_to_update,
+              headers: user_headers
         expect(response).to have_http_status(:not_found)
       end
     end
     context 'When user is NOT LOGGED IN' do
       it 'should NOT update a movie info' do
         patch "/api/v1/movies/#{movie_to_update.id}",
-              :params => params_to_update
+              params: params_to_update
         expect(response).to have_http_status(:unauthorized)
       end
     end

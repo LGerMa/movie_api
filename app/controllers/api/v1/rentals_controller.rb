@@ -13,13 +13,14 @@ class Api::V1::RentalsController < Api::V1::BaseController
     if movie_info.present?
       if movie_info.stock >= rental_info[:qty].to_i
         rental_info[:subtotal] = movie_info.rental_price * rental_info[:qty].to_i
-        #rental_info[:total] = movie_info.rental_price * rental_info[:qty].to_i
         rental_info[:movie_price] = movie_info.rental_price
         rental = current_user.rentals.create!(rental_info)
         render json: rental, status: :created
       else
         render json: {}, status: :unprocessable_entity
       end
+    else
+      render json: {}, status: :not_found
     end
   end
 

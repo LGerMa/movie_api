@@ -19,4 +19,8 @@ class Movie < ApplicationRecord
     self.increment(:stock, qty)
     self.save
   end
+
+  def likes_per_movie
+    likes.count
+  end
 end

@@ -30,6 +30,8 @@ class Rental < ApplicationRecord
         extra_day: extra_days
       )
       self.total = self.subtotal + price_extra.to_i
+    else
+      self.total = self.subtotal
     end
   end
 end
