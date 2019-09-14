@@ -10,6 +10,7 @@ class Rental < ApplicationRecord
 
   before_save :increment_stock, if: :will_save_change_to_returned_at?
 
+  scope :ordered, -> { order(created_at: :desc) }
 
   private
 

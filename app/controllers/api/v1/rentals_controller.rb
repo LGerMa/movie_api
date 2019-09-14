@@ -4,7 +4,8 @@ class Api::V1::RentalsController < Api::V1::BaseController
   before_action :set_rental, only: [:show, :rental_returned]
 
   def index
-
+    rentals = current_user.rentals.on_time.ordered
+    render json: rentals, status: :ok
   end
 
   def create

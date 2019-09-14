@@ -36,13 +36,16 @@ class Ability
       else
         can :read, Movie
         can :create, Rental
+        can :read, Rental, user_id: user.id
         can :rental_returned, Rental, user_id: user.id
         can :create, Purshase
+        can :read, Purshase, user_id: user.id
         can :create, Like
         can :me, User, id: user.id
       end
     else
       can :read, Movie
+      can :search, Movie
     end
   end
 end

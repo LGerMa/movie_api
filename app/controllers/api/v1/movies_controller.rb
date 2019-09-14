@@ -22,6 +22,18 @@ class Api::V1::MoviesController < Api::V1::BaseController
     render json: @movie, status: :ok
   end
 
+  def search
+    page = 0
+    per_page = 10
+    page = search_params[:page].to_i if search_params[:page].present?
+    per_page = search_params[:per_page].to_i if search_params[:per_page].present?
+    movie = Movie.active_and_available
+    movie = movie.find_by_title(search_params[:name]) if search_params[:name].present?
+    movie = movie.sort_by_title
+    movie = movie.limit(per_page).offset(page)
+    render json: movie, status: :ok
+  end
+
   private
 
   def movie_params
@@ -30,5 +42,9 @@ class Api::V1::MoviesController < Api::V1::BaseController
 
   def set_movie
     @movie = Movie.find(params[:id])
+  end
+
+  def search_params
+    params.permit(:page, :per_page, :name)
   end
 end

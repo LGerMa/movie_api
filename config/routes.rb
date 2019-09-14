@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       get '/users/me', to: 'users#me'
       get '/users/me2', to: 'users#me2'
+      get '/movies/search', to: 'movies#search'
       resources :movies do
         resources :likes
       end

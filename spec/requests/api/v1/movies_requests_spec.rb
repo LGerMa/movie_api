@@ -20,6 +20,37 @@ RSpec.describe 'Movie', type: :request do
     end
   end
 
+  describe 'GET movies#search' do
+    let!(:movies) { create_list(:movie, 10)}
+    context 'when not passing argument to search' do
+      it 'should show movies by search' do
+        get '/api/v1/movies/search'
+        expect(json.count).to eq Movie.active_and_available.count
+      end
+    end
+
+    context 'when passing limit argument to search' do
+      it 'should show movies by search' do
+        get '/api/v1/movies/search?page=5'
+        expect(json.count).to be <= 10
+      end
+    end
+
+    context 'when passing offset argument to search' do
+      it 'should show movies by search' do
+        get '/api/v1/movies/search?per_page=20'
+        expect(json.count).to be <= 10
+      end
+    end
+
+    context 'when passing name argument to search' do
+      it 'should show movies by search' do
+        get '/api/v1/movies/search?name=stone'
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
+
   describe 'POST movies#index' do
     let(:params) do
       hp = Faker::Movies::HarryPotter
