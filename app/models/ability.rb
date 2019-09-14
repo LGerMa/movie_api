@@ -43,6 +43,7 @@ class Ability
       end
     else
       can :read, Movie
+      can :search, Movie
     end
   end
 end
