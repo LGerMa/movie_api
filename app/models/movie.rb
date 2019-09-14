@@ -10,7 +10,7 @@ class Movie < ApplicationRecord
 
   scope :active_and_available, -> { where(' availability = ? AND status = ?', true, 1) }
   scope :find_by_title, ->(title) { where('title ILIKE ?', "%#{title}%") }
-
+  scope :sort_by_title, -> { order(title: :asc) }
   def reduce_stock(qty)
     self.decrement(:stock, qty) if self.stock > 0
     self.save

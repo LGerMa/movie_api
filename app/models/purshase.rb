@@ -6,6 +6,8 @@ class Purshase < ApplicationRecord
 
   after_create :reduce_stock
 
+  scope :ordered, -> { order(created_at: :desc) }
+
   private
 
   def reduce_stock

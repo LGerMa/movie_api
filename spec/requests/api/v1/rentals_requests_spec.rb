@@ -42,6 +42,38 @@ RSpec.describe 'Rental', type: :request do
     end
   end
 
+  describe 'GET rentals#index' do
+    before(:each) do
+      @params_rental = {
+          movie_id: movie_to_rental.id,
+          qty: 2,
+          must_returned_at: (Time.now + 2.days).end_of_day
+      }
+      @params_rental_2 = {
+          movie_id: movie_to_rental.id,
+          qty: 2,
+          must_returned_at: (Time.now - 5.days).end_of_day
+      }
+      post "/api/v1/users/#{user.id}/rentals",
+           params: @params_rental,
+           headers: user_headers
+      @rental = json
+      post "/api/v1/users/#{user.id}/rentals",
+           params: @params_rental_2,
+           headers: user_headers
+      @rental_2 = json
+
+    end
+
+    context 'when user has rentals movies' do
+      it 'should see rentals movies on_time' do
+        get "/api/v1/users/#{user.id}/rentals",
+            headers: user_headers
+        expect(json).not_to be_empty
+      end
+    end
+  end
+
   describe 'PATCH rentals#rental_returned' do
     before(:each) do
       @params_rental = {

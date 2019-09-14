@@ -25,4 +25,23 @@ RSpec.describe 'Purshase', type: :request do
       end
     end
   end
+
+  describe 'GET purshases#index' do
+    before(:each) do
+      @params_purshase = {
+          movie_id: movie_to_purshase.id,
+          qty: 2
+      }
+      post "/api/v1/users/#{user.id}/purshases",
+           params: @params_purshase,
+           headers: user_headers
+    end
+    context 'when user is logged in' do
+      it 'should list purshase' do
+        get "/api/v1/users/#{user.id}/purshases",
+            headers: user_headers
+        expect(json).not_to be_empty
+      end
+    end
+  end
 end

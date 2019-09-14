@@ -2,6 +2,10 @@ class Api::V1::PurshasesController < Api::V1::BaseController
   before_action :doorkeeper_authorize!
   load_and_authorize_resource
 
+  def index
+    render json: current_user.purshases.ordered, status: :ok
+  end
+
   def create
     purshase_info = purshase_params
     movie_info = Movie.find(purshase_info[:movie_id])
