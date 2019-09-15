@@ -1,0 +1,4 @@
+development:
+  DATABASE_USERNAME: <db user>
+  DATABASE_PASSWORD: <db pass>
+  DATABASE_HOST: localhost
